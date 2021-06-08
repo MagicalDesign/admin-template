@@ -3,6 +3,7 @@ import App from "./App.vue";
 import { router } from "./view/router/router";
 
 import ElementPlus from "element-plus";
+import "virtual:windi.css";
 import "element-plus/lib/theme-chalk/index.css";
 
 const app = createApp(App);
