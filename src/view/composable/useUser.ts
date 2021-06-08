@@ -1,6 +1,7 @@
 import { ref } from "vue";
+import { post, UserInfo } from "../../backend/api/post";
 
-const userInfo = ref({
+const userInfo = ref<UserInfo>({
   name: "pyx",
   token: "pyx ai chi rou",
   hobbies: ["chi rou"],
