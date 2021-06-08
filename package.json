@@ -1,0 +1,24 @@
+{
+  "name": "pyx-admin-template",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "湫曗 <autumnsilverleaves@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.3",
+    "@vitejs/plugin-vue-jsx": "^1.1.5",
+    "@vue/compiler-sfc": "^3.1.1",
+    "typescript": "^4.3.2",
+    "vite": "^2.3.7",
+    "vite-plugin-windicss": "^1.0.3",
+    "windicss": "^3.1.3"
+  },
+  "dependencies": {
+    "vue": "^3.1.1",
+    "vue-router": "^4.0.8"
+  }
+}
