@@ -16,6 +16,7 @@
 
         <Greeting></Greeting>
         <SimpleGreeting name="pyx"></SimpleGreeting>
+        <!-- <EnhengSimpleGreeting></EnhengSimpleGreeting> -->
     </div>
 </template>
 
@@ -30,6 +31,7 @@ export default defineComponent({
         HelloWorld,
         Greeting,
         SimpleGreeting,
+        // EnhengSimpleGreeting
     },
     setup() {
         const user = useUser()
