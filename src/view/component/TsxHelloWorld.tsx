@@ -10,6 +10,37 @@ export const SimpleGreeting = (props: { name: string }, children: []) => {
   return <div>hi {props.name}</div>;
 };
 
+const myDefineComponent = <P extends {}>(
+  componnent: (props: P, ctx: SetupContext) => any
+) => {
+  const com = defineComponent({
+    setup(_, ctx) {
+      const { render, ...obj } = componnent(ctx.attrs as P, ctx);
+
+      return {
+        obj,
+        render() {
+          return render();
+        },
+      };
+    },
+    render(ctx: { render: () => JSX.Element }) {
+      return ctx.render();
+    },
+  });
+  return com as unknown as (props: P) => JSX.Element;
+};
+
+export const EnhengSimpleGreeting = myDefineComponent(
+  (props: { name: string }, ctx) => {
+    return {
+      render() {
+        return <div>hi {props.name}</div>;
+      },
+    };
+  }
+);
+
 /**
  *  带功能的组件
  */
@@ -28,7 +59,14 @@ export const Greeting = defineComponent({
     return {
       fn,
       render() {
-        return <div>greeting</div>;
+        return (
+          <div>
+            greeting{" "}
+            <EnhengSimpleGreeting
+              name={"完美的类型推断"}
+            ></EnhengSimpleGreeting>
+          </div>
+        );
       },
     };
   },

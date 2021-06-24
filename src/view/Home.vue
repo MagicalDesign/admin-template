@@ -16,7 +16,7 @@
 
         <Greeting></Greeting>
         <SimpleGreeting name="pyx"></SimpleGreeting>
-        <!-- <EnhengSimpleGreeting></EnhengSimpleGreeting> -->
+        <EnhengSimpleGreeting name="pyx 2"></EnhengSimpleGreeting>
     </div>
 </template>
 
@@ -24,14 +24,14 @@
 import { defineComponent } from "vue"
 import { useConfig } from "./composable/useConfig";
 import { useUser } from "./composable/useUser";
-import { Greeting, SimpleGreeting } from "./component/TsxHelloWorld"
+import { Greeting, SimpleGreeting, EnhengSimpleGreeting } from "./component/TsxHelloWorld"
 import HelloWorld from "./component/HelloWorld.vue"
 export default defineComponent({
     components: {
         HelloWorld,
         Greeting,
         SimpleGreeting,
-        // EnhengSimpleGreeting
+        EnhengSimpleGreeting
     },
     setup() {
         const user = useUser()
