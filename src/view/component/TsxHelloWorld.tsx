@@ -52,14 +52,6 @@ export const EnhengSimpleGreeting = myDefineComponent(
   }
 );
 
-const render = <P extends {}, I>(Com: (p: P) => I & JSX.Element, props: P) => {
-  const instance = <Com {...props}></Com>;
-
-  return instance as unknown as I;
-};
-
-const r = render;
-
 /**
  *  带功能的组件
  */
@@ -79,7 +71,6 @@ export const Greeting = defineComponent({
       <EnhengSimpleGreeting name={"完美的类型推断"}></EnhengSimpleGreeting>
     );
 
-    const comInstance2 = r(EnhengSimpleGreeting, { name: "pyx 小朋友" });
     const comInstance3 = EnhengSimpleGreeting({ name: "pyx 小朋友aaa" });
 
     return {
@@ -87,7 +78,7 @@ export const Greeting = defineComponent({
       render() {
         return (
           <div>
-            greeting {comInstance},{comInstance2},{comInstance3},
+            greeting {comInstance},{comInstance3},
             <EnhengSimpleGreeting name={"测试一下"}></EnhengSimpleGreeting>
           </div>
         );
