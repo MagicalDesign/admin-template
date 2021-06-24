@@ -16,7 +16,10 @@ const myDefineComponent = <
 >(
   componnent: (props: P, ctx: SetupContext) => any
 ) => {
+  const comName = componnent.name || "Anonymous Component";
+
   const OptionCom = defineComponent({
+    name: `_${comName}`,
     setup(_, ctx) {
       const { render, ...obj } = componnent(ctx.attrs as P, ctx);
 
@@ -32,25 +35,26 @@ const myDefineComponent = <
     },
   });
 
-  const funtionCom = (props: P) => {
-    const instance = <OptionCom {...props}></OptionCom>;
-    return instance as unknown as I;
+  const funtionCom = {
+    [comName]: (props: P) => {
+      const instance = <OptionCom {...props}></OptionCom>;
+      return instance as unknown as I;
+    },
   };
 
-  const CombinedCom = Object.assign(funtionCom, OptionCom);
-
-  return CombinedCom as unknown as (props: P) => I & JSX.Element;
+  return funtionCom[comName] as unknown as (props: P) => I & JSX.Element;
 };
 
-export const EnhengSimpleGreeting = myDefineComponent(
-  (props: { name: string }, ctx) => {
-    return {
-      render() {
-        return <span>hi {props.name}</span>;
-      },
-    };
-  }
-);
+export const EnhengSimpleGreeting = myDefineComponent(function Aaa(
+  props: { name: string },
+  ctx
+) {
+  return {
+    render() {
+      return <span>hi {props.name}</span>;
+    },
+  };
+});
 
 /**
  *  带功能的组件
