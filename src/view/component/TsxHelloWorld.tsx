@@ -16,7 +16,7 @@ const myDefineComponent = <
 >(
   componnent: (props: P, ctx: SetupContext) => any
 ) => {
-  const Com = defineComponent({
+  const OptionCom = defineComponent({
     setup(_, ctx) {
       const { render, ...obj } = componnent(ctx.attrs as P, ctx);
 
@@ -32,12 +32,12 @@ const myDefineComponent = <
     },
   });
 
-  const temp = (props: P) => {
-    const instance = <Com {...props}></Com>;
+  const funtionCom = (props: P) => {
+    const instance = <OptionCom {...props}></OptionCom>;
     return instance as unknown as I;
   };
 
-  const CombinedCom = Object.assign(temp, Com);
+  const CombinedCom = Object.assign(funtionCom, OptionCom);
 
   return CombinedCom as unknown as (props: P) => I & JSX.Element;
 };
