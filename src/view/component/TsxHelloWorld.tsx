@@ -21,14 +21,7 @@ const myDefineComponent = <
   const OptionCom = defineComponent({
     name: `_${comName}`,
     setup(_, ctx) {
-      const { render, ...obj } = componnent(ctx.attrs as P, ctx);
-
-      return {
-        obj,
-        render() {
-          return render();
-        },
-      };
+      return componnent(ctx.attrs as P, ctx);
     },
     render(ctx: { render: () => JSX.Element }) {
       return ctx.render();
