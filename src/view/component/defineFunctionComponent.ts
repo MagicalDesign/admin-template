@@ -1,8 +1,8 @@
-import { SetupContext, defineComponent } from "vue";
+import { SetupContext, defineComponent, h, VNode } from "vue";
 
 export const defineFunctionComponent = <
   P extends {},
-  I extends { render: () => JSX.Element }
+  I extends { render: () => VNode }
 >(
   componnent: (props: P, ctx: SetupContext) => any
 ) => {
@@ -13,17 +13,17 @@ export const defineFunctionComponent = <
     setup(_, ctx) {
       return componnent(ctx.attrs as P, ctx);
     },
-    render(ctx: { render: () => JSX.Element }) {
+    render(ctx: { render: () => VNode }) {
       return ctx.render();
     },
   });
 
   const funtionCom = {
     [comName]: (props: P) => {
-      const instance = <OptionCom {...props}></OptionCom>;
+      const instance = h(OptionCom, props);
       return instance as unknown as I;
     },
   };
 
-  return funtionCom[comName] as unknown as (props: P) => I & JSX.Element;
+  return funtionCom[comName] as unknown as (props: P) => I & VNode;
 };
