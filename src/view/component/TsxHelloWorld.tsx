@@ -5,7 +5,15 @@ import {
   SetupContext,
 } from "vue";
 import { defineFunctionComponent } from "./defineFunctionComponent";
-import { useState, useWatch, useOnMounted, useOnUpdated } from "./hookImp";
+import {
+  useState,
+  useWatch,
+  useOnMounted,
+  useOnUpdated,
+  useOnUnmounted,
+  useComputed,
+  useWatchEffect,
+} from "./hookImp";
 /**
  * 极其简单的函数式组件，强烈推荐使用
  * @param props
@@ -14,14 +22,25 @@ import { useState, useWatch, useOnMounted, useOnUpdated } from "./hookImp";
 
 export const SimpleGreeting = (props: { name: string }, children: []) => {
   const state = useState(reactive({ count: 0 }));
-  useWatch(state, () => {
-    console.log("useEffect", state.count);
+  const double = useComputed(() => {
+    return state.count * 2;
   });
+  useWatch(state, () => {
+    console.log("useWatch", state.count);
+  });
+
+  useWatchEffect(() => {
+    console.log("useWatchEffect double", double.value);
+  });
+
   useOnUpdated(() => {
     console.log("useOnUpdated");
   });
   useOnMounted(() => {
     console.log("useOnMounted");
+  });
+  useOnUnmounted(() => {
+    console.log("useOnUnmounted");
   });
   return (
     <div>
@@ -32,7 +51,7 @@ export const SimpleGreeting = (props: { name: string }, children: []) => {
       >
         increase
       </button>
-      :{state.count}
+      count:{state.count};double:{double.value}
     </div>
   );
 };

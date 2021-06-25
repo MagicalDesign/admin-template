@@ -11,6 +11,9 @@ import {
   watchEffect,
   onUpdated,
   onUnmounted,
+  onBeforeUnmount,
+  nextTick,
+  onDeactivated,
 } from "vue";
 type MultiWatchSources = (WatchSource<unknown> | object)[];
 type MapSources<T, Immediate> = {
@@ -116,7 +119,9 @@ export const useWatchEffect = <T>(fn: () => T) => {
 export const useOnMounted = <T>(fn: () => void) => {
   const instance = getCurrentInstance();
   if (!instance.isMounted) {
-    onMounted(fn, instance);
+    nextTick(() => {
+      fn();
+    });
   }
 };
 
@@ -130,6 +135,10 @@ export const useOnUpdated = <T>(fn: () => void) => {
 export const useOnUnmounted = <T>(fn: () => void) => {
   const instance = getCurrentInstance();
   if (!instance.isMounted) {
-    onUnmounted(fn, instance);
+    const i = instance as unknown as { um: (() => void)[] };
+    if (!i.um) {
+      i.um = [];
+    }
+    i.um.push(fn);
   }
 };
