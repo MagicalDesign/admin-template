@@ -5,7 +5,7 @@ import {
   SetupContext,
 } from "vue";
 import { defineFunctionComponent } from "./defineFunctionComponent";
-import { useState, useWatch } from "./hookImp";
+import { useState, useWatch, useOnMounted, useOnUpdated } from "./hookImp";
 /**
  * 极其简单的函数式组件，强烈推荐使用
  * @param props
@@ -16,6 +16,9 @@ export const SimpleGreeting = (props: { name: string }, children: []) => {
   const state = useState(reactive({ count: 0 }));
   useWatch(state, () => {
     console.log("useEffect", state.count);
+  });
+  useOnUpdated(() => {
+    console.log("useOnUpdated");
   });
   return (
     <div>
