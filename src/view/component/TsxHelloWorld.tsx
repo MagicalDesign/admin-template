@@ -20,7 +20,7 @@ import {
  * @returns
  */
 
-export const SimpleGreeting = (props: { name: string }, children: []) => {
+export const SimpleGreeting = (props: { name: string }, ctx: SetupContext) => {
   const state = useState(reactive({ count: 0 }));
   const double = useComputed(() => {
     return state.count * 2;
