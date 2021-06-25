@@ -1,13 +1,30 @@
-import { defineComponent } from "@vue/runtime-core";
-import { SetupContext } from "vue";
-
+import {
+  defineComponent,
+  getCurrentInstance,
+  reactive,
+  SetupContext,
+} from "vue";
+import { useState } from "./hookImp";
 /**
  * 极其简单的函数式组件，强烈推荐使用
  * @param props
  * @returns
  */
+
 export const SimpleGreeting = (props: { name: string }, children: []) => {
-  return <div>hi {props.name}</div>;
+  const state = useState(reactive({ count: 0 }));
+  return (
+    <div>
+      <button
+        onClick={() => {
+          state.count++;
+        }}
+      >
+        increase
+      </button>
+      :{state.count}
+    </div>
+  );
 };
 
 const myDefineComponent = <
