@@ -6,12 +6,12 @@ interface HookState {
   currentIndex: number;
   initial: boolean;
 }
+
 export const useState = <T>(state: T): T => {
   const instance = getCurrentInstance();
 
   let hookState: HookState = Reflect.get(instance, hookSymbol);
 
-  console.log(!hookState);
   if (!hookState) {
     hookState = {
       states: [state],
@@ -19,10 +19,8 @@ export const useState = <T>(state: T): T => {
       initial: true,
     };
     Reflect.set(instance, hookSymbol, hookState);
-    console.log("add");
     return hookState.states[hookState.currentIndex] as T;
   } else {
-    console.log("return");
     hookState.currentIndex++;
     if (
       !instance.isMounted &&
