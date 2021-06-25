@@ -14,6 +14,7 @@ import {
   onBeforeUnmount,
   nextTick,
   onDeactivated,
+  queuePostFlushCb,
 } from "vue";
 type MultiWatchSources = (WatchSource<unknown> | object)[];
 type MapSources<T, Immediate> = {
@@ -119,9 +120,7 @@ export const useWatchEffect = <T>(fn: () => T) => {
 export const useOnMounted = <T>(fn: () => void) => {
   const instance = getCurrentInstance();
   if (!instance.isMounted) {
-    nextTick(() => {
-      fn();
-    });
+    queuePostFlushCb(fn);
   }
 };
 
