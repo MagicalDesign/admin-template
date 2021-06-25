@@ -5,7 +5,7 @@ import {
   SetupContext,
 } from "vue";
 import { defineFunctionComponent } from "./defineFunctionComponent";
-import { useState } from "./hookImp";
+import { useState, useEffect } from "./hookImp";
 /**
  * 极其简单的函数式组件，强烈推荐使用
  * @param props
@@ -14,6 +14,9 @@ import { useState } from "./hookImp";
 
 export const SimpleGreeting = (props: { name: string }, children: []) => {
   const state = useState(reactive({ count: 0 }));
+  useEffect(state, () => {
+    console.log("useEffect", state.count);
+  });
   return (
     <div>
       <button
