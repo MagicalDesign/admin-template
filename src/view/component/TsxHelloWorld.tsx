@@ -20,6 +20,9 @@ export const SimpleGreeting = (props: { name: string }, children: []) => {
   useOnUpdated(() => {
     console.log("useOnUpdated");
   });
+  useOnMounted(() => {
+    console.log("useOnMounted");
+  });
   return (
     <div>
       <button

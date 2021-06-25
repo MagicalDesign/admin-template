@@ -4,7 +4,7 @@
         <div>{{ user.userInfo.value.hobbies }}</div>
         <div>{{ config.config }}</div>
         <el-row>
-            <el-button plain>朴素按钮</el-button>
+            <el-button plain @click="show = !show">朴素按钮 show</el-button>
             <el-button type="primary" plain>主要按钮</el-button>
             <el-button type="success" plain>成功按钮</el-button>
             <el-button type="info" plain>信息按钮</el-button>
@@ -15,13 +15,13 @@
         <HelloWorld></HelloWorld>
 
         <Greeting></Greeting>
-        <SimpleGreeting name="pyx"></SimpleGreeting>
+        <SimpleGreeting v-if="show" name="pyx"></SimpleGreeting>
         <EnhengSimpleGreeting name="pyx 2"></EnhengSimpleGreeting>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, ref } from "vue"
 import { useConfig } from "./composable/useConfig";
 import { useUser } from "./composable/useUser";
 import { Greeting, SimpleGreeting, EnhengSimpleGreeting } from "./component/TsxHelloWorld"
@@ -36,7 +36,10 @@ export default defineComponent({
     setup() {
         const user = useUser()
         const config = useConfig()
+
+        const show = ref(true)
         return {
+            show,
             user,
             config
 

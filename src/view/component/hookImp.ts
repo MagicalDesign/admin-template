@@ -10,6 +10,7 @@ import {
   ComputedRef,
   watchEffect,
   onUpdated,
+  onUnmounted,
 } from "vue";
 type MultiWatchSources = (WatchSource<unknown> | object)[];
 type MapSources<T, Immediate> = {
@@ -115,13 +116,20 @@ export const useWatchEffect = <T>(fn: () => T) => {
 export const useOnMounted = <T>(fn: () => void) => {
   const instance = getCurrentInstance();
   if (!instance.isMounted) {
-    console.log(onMounted(fn, instance));
+    onMounted(fn, instance);
   }
 };
 
 export const useOnUpdated = <T>(fn: () => void) => {
   const instance = getCurrentInstance();
   if (!instance.isMounted) {
-    console.log(onUpdated(fn, instance));
+    onUpdated(fn, instance);
+  }
+};
+
+export const useOnUnmounted = <T>(fn: () => void) => {
+  const instance = getCurrentInstance();
+  if (!instance.isMounted) {
+    onUnmounted(fn, instance);
   }
 };
