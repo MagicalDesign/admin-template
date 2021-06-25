@@ -1,4 +1,4 @@
-import { SetupContext, defineComponent, h, VNode } from "vue";
+import { SetupContext, defineComponent, h, VNode, DefineComponent } from "vue";
 
 export const defineFunctionComponent = <
   P extends {},
@@ -9,7 +9,7 @@ export const defineFunctionComponent = <
   const comName = componnent.name || "Anonymous Component";
 
   const OptionCom = defineComponent({
-    name: `_${comName}`,
+    name: comName,
     setup(_, ctx) {
       return componnent(ctx.attrs as P, ctx);
     },
@@ -25,5 +25,11 @@ export const defineFunctionComponent = <
     },
   };
 
-  return funtionCom[comName] as unknown as (props: P) => I & VNode;
+  Reflect.set(OptionCom, "create", funtionCom[comName]);
+
+  const com = OptionCom as unknown as ((props: P) => I & VNode) & {
+    create: (props: P) => I & VNode;
+  };
+
+  return com;
 };

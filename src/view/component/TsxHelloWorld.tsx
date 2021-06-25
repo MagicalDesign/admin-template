@@ -86,7 +86,7 @@ export const Greeting = defineComponent({
       <EnhengSimpleGreeting name={"完美的类型推断"}></EnhengSimpleGreeting>
     );
 
-    const comInstance3 = EnhengSimpleGreeting({ name: "pyx 小朋友aaa" });
+    const comInstance3 = EnhengSimpleGreeting.create({ name: "pyx 小朋友aaa" });
 
     return {
       fn,
