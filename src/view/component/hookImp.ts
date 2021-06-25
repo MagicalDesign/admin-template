@@ -8,6 +8,7 @@ import {
   WatchOptions,
   computed,
   ComputedRef,
+  watchEffect,
 } from "vue";
 type MultiWatchSources = (WatchSource<unknown> | object)[];
 type MapSources<T, Immediate> = {
@@ -88,6 +89,8 @@ export const useWatch = ((source, watchCallback, option) => {
   if (!instance.isMounted) {
     watchStopHandle = watch(source, watchCallback, option);
   }
+
+  instance.vnode.appContext.components;
   return useState(watchStopHandle);
 }) as unknown as UseWatch;
 
@@ -98,4 +101,13 @@ export const useComputed = <T>(fn: () => T) => {
     computedRef = computed(fn);
   }
   return useState(computedRef);
+};
+
+export const useWatchEffect = <T>(fn: () => T) => {
+  const instance = getCurrentInstance();
+  let watchStopHandle: WatchStopHandle;
+  if (!instance.isMounted) {
+    watchStopHandle = watchEffect(fn);
+  }
+  return useState(watchStopHandle);
 };
