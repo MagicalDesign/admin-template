@@ -6,6 +6,8 @@ import {
   WatchSource,
   WatchCallback,
   WatchOptions,
+  computed,
+  ComputedRef,
 } from "vue";
 type MultiWatchSources = (WatchSource<unknown> | object)[];
 type MapSources<T, Immediate> = {
@@ -52,7 +54,7 @@ export const useState = <T>(state: T): T => {
 
   return hookState.states[hookState.currentIndex] as T;
 };
-export interface UseEffect {
+export interface UseWatch {
   <T extends MultiWatchSources, Immediate extends Readonly<boolean> = false>(
     sources: [...T],
     cb: WatchCallback<MapSources<T, false>, MapSources<T, Immediate>>,
@@ -80,11 +82,20 @@ export interface UseEffect {
   ): WatchStopHandle;
 }
 
-export const useEffect = ((source, watchCallback, option) => {
+export const useWatch = ((source, watchCallback, option) => {
   const instance = getCurrentInstance();
   let watchStopHandle: WatchStopHandle;
   if (!instance.isMounted) {
     watchStopHandle = watch(source, watchCallback, option);
   }
   return useState(watchStopHandle);
-}) as unknown as UseEffect;
+}) as unknown as UseWatch;
+
+export const useComputed = <T>(fn: () => T) => {
+  const instance = getCurrentInstance();
+  let computedRef: ComputedRef;
+  if (!instance.isMounted) {
+    computedRef = computed(fn);
+  }
+  return useState(computedRef);
+};
