@@ -31,22 +31,21 @@ export const useState = <T>(state: T): T => {
 
   let hookState: HookState = Reflect.get(instance, hookSymbol);
 
-  if (!hookState) {
-    hookState = {
-      states: [state],
-      currentIndex: 0,
-      initial: true,
-    };
-    Reflect.set(instance, hookSymbol, hookState);
-    return hookState.states[hookState.currentIndex] as T;
+  if (!instance.isMounted) {
+    if (!hookState) {
+      hookState = {
+        states: [state],
+        currentIndex: 0,
+        initial: true,
+      };
+      Reflect.set(instance, hookSymbol, hookState);
+    } else {
+      hookState.currentIndex++;
+      hookState.states.push(state);
+    }
   } else {
     hookState.currentIndex++;
-    if (
-      !instance.isMounted &&
-      hookState.states.length === hookState.currentIndex
-    ) {
-      hookState.states.push(state);
-    } else {
+    if (hookState.states.length === hookState.currentIndex) {
       hookState.currentIndex = 0;
     }
   }
