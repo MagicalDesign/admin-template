@@ -134,10 +134,12 @@ export const useOnUpdated = <T>(fn: () => void) => {
 export const useOnUnmounted = <T>(fn: () => void) => {
   const instance = getCurrentInstance();
   if (!instance.isMounted) {
-    const i = instance as unknown as { um: (() => void)[] };
-    if (!i.um) {
-      i.um = [];
-    }
-    i.um.push(fn);
+    // const i = instance as unknown as { um: (() => void)[] };
+    // if (!i.um) {
+    //   i.um = [];
+    // }
+    // i.um.push(fn);
+
+    onUnmounted(fn, instance);
   }
 };
