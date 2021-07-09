@@ -1,17 +1,19 @@
-import { SetupContext, defineComponent, h, VNode, DefineComponent } from "vue";
+import { SetupContext, defineComponent, h, VNode } from "vue";
 
 export const defineFunctionComponent = <
   P extends {},
   I extends { render: () => VNode }
 >(
-  componnent: (props: P, ctx: SetupContext) => any
+  component: (props: P, ctx: SetupContext) => I,
+  option?: { name: string; inheritAttrs: boolean }
 ) => {
-  const comName = componnent.name || "Anonymous Component";
+  const comName = option?.name || component.name || "Anonymous Component";
 
   const OptionCom = defineComponent({
     name: comName,
+    inheritAttrs: option?.inheritAttrs ?? true,
     setup(_, ctx) {
-      return componnent(ctx.attrs as P, ctx);
+      return component(ctx.attrs as P, ctx);
     },
     render(ctx: { render: () => VNode }) {
       return ctx.render();
@@ -27,8 +29,10 @@ export const defineFunctionComponent = <
 
   Reflect.set(OptionCom, "create", funtionCom[comName]);
 
-  const com = OptionCom as unknown as ((props: P) => I & VNode) & {
-    create: (props: P) => I & VNode;
+  type Sign = (props: P) => I & VNode;
+
+  const com = OptionCom as unknown as Sign & {
+    create: Sign;
   };
 
   return com;
