@@ -37,3 +37,43 @@ export const defineFunctionComponent = <
 
   return com;
 };
+
+export const defineClassConponen = <
+  P extends {},
+  I extends { render: () => VNode }
+>(
+  component: new (props: P, ctx: SetupContext) => I,
+  option?: { name: string; inheritAttrs: boolean }
+) => {
+  const comName = option?.name || component.name || "Anonymous Component";
+
+  const OptionCom = defineComponent({
+    name: comName,
+    inheritAttrs: option?.inheritAttrs ?? true,
+    setup(_, ctx) {
+      const comInstance = new component(ctx.attrs as P, ctx);
+      comInstance.render = comInstance.render.bind(comInstance);
+      return comInstance;
+    },
+    render(ctx: { render: () => VNode }) {
+      return ctx.render();
+    },
+  });
+
+  const funtionCom = {
+    [comName]: (props: P) => {
+      const instance = h(OptionCom, props);
+      return instance as unknown as I;
+    },
+  };
+
+  Reflect.set(OptionCom, "create", funtionCom[comName]);
+
+  type Sign = (props: P) => I & VNode;
+
+  const com = OptionCom as unknown as Sign & {
+    create: Sign;
+  };
+
+  return com;
+};
